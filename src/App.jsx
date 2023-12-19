@@ -22,10 +22,9 @@ function Quote({id, content, author}) {
   const style = {
       width: '15px'
   }
-  const {error, data, fetchData} = useFetch(
+    const {error, data} = useFetch(
       `https://api.quotable.io/quotes/random`
     )
-
     const handleButtonClick = () => {
       console.log('click')
       // Mettez à jour la citation lorsqu'on clique sur le bouton
