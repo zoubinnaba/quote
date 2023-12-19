@@ -1,26 +1,28 @@
-import { useEffect, useState } from "react";
-/**
- * Fait une requette pour recuperer des donnees
- * @param {string} url
- * @param {FetchEventInit} options
- */
-export function useFetch(url, options = {}) {
-    const [data, setData] = useState(null)
-    const [erros, setErrors] = useState(null)
+// useFetch.jsx
+import { useState, useEffect } from 'react';
 
-    useEffect(() => {
-        fetch(url, {
-            ...options,
-            headers: {
-                'Accept': 'application/json; charset=UTF-8',
-                ...options.headers
-            }
-        }).then(r => r.json()).then(data => {
-            setData(data)
-        }).catch((e) => {
-            setErrors(e)
-        })
-    }, [])
+export function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
-    return {data, erros}
+  const fetchData = async () => {
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [url]);
+
+  // Ajoutez la fonction refetch ici
+  const refetch = () => {
+    fetchData();
+  };
+
+  return { data, error, refetch };
 }
